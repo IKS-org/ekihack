@@ -1,3 +1,4 @@
+# original
 nozomi
 seria
 mero
@@ -15,6 +16,7 @@ izuna
 fubu
 ringo
 nyash
+dachu
 ichiho
 imura
 nikoro
@@ -84,7 +86,7 @@ kurogane
 misora
 meguru
 minato
-hime
+himegi
 tamaki
 ginka
 ai
@@ -98,6 +100,17 @@ amane
 mafuyu
 otome
 chizu
+tsubasa
+mashiro
+natsumi
+akira
+iyo
+yumeno
+shikine
+teira
+asuka
+
+# extra
 hermine
 mahiru
 susugu
@@ -136,3 +149,22 @@ mia
 masha
 nika
 polya
+chocolat
+leonie
+lenya
+amira
+tie
+nene
+myu
+aco
+chloe
+emma
+lea
+luiza
+elena
+melina
+
+# iks-gear
+riko
+comyu
+chii
