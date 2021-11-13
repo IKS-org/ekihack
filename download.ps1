@@ -14,7 +14,7 @@ $size     = "large";
 $type     = "full";
 
 # 表情リスト
-$emotions = @("usual", "smile", "dovey", "angry", "tired", "dreamy", "amaze");
+$emotions = @("usual") #, "smile", "dovey", "angry", "tired", "dreamy", "amaze");
 
 
 # Generate URL
@@ -25,41 +25,51 @@ function pic_url($version, $name, $wrapping, $size, $type, $emotion){
 # main
 
 # load ignore pattern
-$ignore = Import-Csv .\ignore.pattern.txt
+$ignore = @{}
+Import-Csv .\ignore.pattern.txt | %{$ignore[$_.dencoh_name] += @($_.wrap_name)}
+
 if ( (test-path download) -ne $True ) {
     mkdir download
 }
 
 Get-Content .\wrapping.dict.txt | %{
-    if( $_[0] -ne "#" -and $_ -ne ""){
+    if( $_[0] -ne "#" -and $_.Trim() -ne ""){
         $wrapping = $_
         if ( (test-path download/${wrapping}) -ne $True ) {
             mkdir download/${wrapping}
         }
         Get-Content .\dencoh.dict.txt | %{
             $dencoh = $_
-            $file_exist = (test-path "download/${wrapping}/${dencoh}_${emotion}.png")
-            if( $_[0] -ne "#" -and $_ -ne ""){
+            if( $_[0] -ne "#" -and $_.Trim() -ne ""){
 
-                # ファイルが存在する
-                if ( $file_exist ){
-                    echo "既にファイルが存在します : ${dencoh} - ${wrapping}"
-                    return
-                }
-
-                if (($ignore | ?{$_.dencoh_name -eq $dencoh -and $_.wrap_name -eq $wrapping}).Count -ne 0 ){
-                    echo "存在しない組み合わせ : ${dencoh} - ${wrapping}"
-                    return
+                if ($wrapping.length -lt 3){
+                    echo $wrapping
                 }
 
                 $emotions | %{
                     $emotion = $_
+
+                    $file_exist = (test-path "download/${wrapping}/${dencoh}_${emotion}.png")
+                    # ファイルが存在する
+                    if ( $file_exist ){
+                        echo "既にファイルが存在します : ${dencoh} - ${wrapping}"
+                        return
+                    }
+
+                    if ( $ignore.${dencoh}.Contains(${wrapping}) ){
+                        echo "存在しない組み合わせ : ${dencoh} - ${wrapping}"
+                        return
+                    }
+
                     $URL = $(pic_url $version $dencoh $wrapping $size $type $emotion)
+                    echo "START : ${URL}"
                     Start-Job -ScriptBlock {
                         try {
                             Invoke-WebRequest $URL -O "download/${using:wrapping}/${using:dencoh}_${using:emotion}.png"
+                            #Invoke-WebRequest $URL -O "download/${wrapping}/${dencoh}_${emotion}.png"
                         }catch{
                             echo "ERR : ${using:dencoh} + ${using:type} + ${using:wrapping} + ${using:emotion}" >> ./error.log
+                            #echo "ERR : ${dencoh} + ${type} + ${wrapping} + ${emotion}" >> ./error.log
                         }
                     }
                 }
