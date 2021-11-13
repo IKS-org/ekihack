@@ -65,7 +65,7 @@ Get-Content .\wrapping.dict.txt | %{
                     echo "START : ${URL}"
                     Start-Job -ScriptBlock {
                         try {
-                            Invoke-WebRequest $URL -O "download/${using:wrapping}/${using:dencoh}_${using:emotion}.png"
+                            Invoke-WebRequest ${using:URL} -O "download/${using:wrapping}/${using:dencoh}_${using:emotion}.png"
                             #Invoke-WebRequest $URL -O "download/${wrapping}/${dencoh}_${emotion}.png"
                         }catch{
                             echo "ERR : ${using:dencoh} + ${using:type} + ${using:wrapping} + ${using:emotion}" >> ./error.log
