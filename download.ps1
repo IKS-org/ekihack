@@ -26,27 +26,42 @@ function pic_url($version, $name, $wrapping, $size, $type, $emotion){
 
 # load ignore pattern
 $ignore = Import-Csv .\ignore.pattern.txt
-mkdir download
+if ( (test-path download) -ne $True ) {
+    mkdir download
+}
 
 Get-Content .\wrapping.dict.txt | %{
     if( $_[0] -ne "#" -and $_ -ne ""){
         $wrapping = $_
-        mkdir download/${wrapping}
+        if ( (test-path download/${wrapping}) -ne $True ) {
+            mkdir download/${wrapping}
+        }
         Get-Content .\dencoh.dict.txt | %{
             $dencoh = $_
-            if( $_[0] -ne "#" -and $_ -ne "" -and ($ignore | ?{$_.dencoh_name -eq $dencoh -and $_.wrap_name -eq $wrapping}).Count -eq 0){
+            $file_exist = (test-path "download/${wrapping}/${dencoh}_${emotion}.png")
+            if( $_[0] -ne "#" -and $_ -ne ""){
+
+                # ファイルが存在する
+                if ( $file_exist ){
+                    echo "既にファイルが存在します : ${dencoh} - ${wrapping}"
+                    return
+                }
+
+                if (($ignore | ?{$_.dencoh_name -eq $dencoh -and $_.wrap_name -eq $wrapping}).Count -ne 0 ){
+                    echo "存在しない組み合わせ : ${dencoh} - ${wrapping}"
+                    return
+                }
+
                 $emotions | %{
                     $emotion = $_
-                    try {
-                        $URL = $(pic_url $version $dencoh $wrapping $size $type $emotion)
-	                    Invoke-WebRequest $URL -O "download/${wrapping}/${dencoh}_${emotion}.png" &
-                    }catch{
-                        echo "ERR : ${dencoh} + ${wrapping}" >> ./error.log
+                    $URL = $(pic_url $version $dencoh $wrapping $size $type $emotion)
+                    Start-Job -ScriptBlock {
+                        try {
+                            Invoke-WebRequest $URL -O "download/${using:wrapping}/${using:dencoh}_${using:emotion}.png"
+                        }catch{
+                            echo "ERR : ${using:dencoh} + ${using:type} + ${using:wrapping} + ${using:emotion}" >> ./error.log
+                        }
                     }
-                }
-            }else{
-                if ($_[0] -ne "#" -and $_ -ne ""){
-                    echo "存在しない組み合わせ : ${dencoh} - ${wrapping}"
                 }
             }
         }
