@@ -14,7 +14,7 @@ $size     = "large";
 $type     = "full";
 
 # 表情リスト
-$emotions = @("smile", "dovey", "angry", "tired");
+$emotions = @("usual", "smile", "dovey", "angry", "tired", "dreamy", "amaze");
 
 
 # Generate URL
