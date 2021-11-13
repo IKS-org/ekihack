@@ -4,8 +4,8 @@
 # Version定数 - 駅メモサーバ側で定期的に変更があります(間違ってても弊害はなさそうです)
 $version  = "20211111001";
 
-# ラッピング - 色々あります
-$wrapping = "ongeki";
+# ラッピング - リストから取得しますが、ここで指定されている場合はそのラッピングのみ取得します。
+$wrapping = "default";
 
 # 画像の大きさ - large / small / medium(?)
 $size     = "large";
@@ -32,7 +32,13 @@ if ( (test-path download) -ne $True ) {
     mkdir download
 }
 
-Get-Content .\wrapping.dict.txt | %{
+if ($wrapping) {
+    $wrappings = @($wrapping)
+}else{
+    $wrappings = Get-Content .\wrapping.dict.txt
+}
+
+$wrappings | %{
     if( $_[0] -ne "#" -and $_.Trim() -ne ""){
         $wrapping = $_
         if ( (test-path download/${wrapping}) -ne $True ) {
