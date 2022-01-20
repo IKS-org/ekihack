@@ -2,19 +2,19 @@
 # ダウンロードしたい画像に応じて、以下の設定部分を変更します。
 
 # Version定数 - 駅メモサーバ側で定期的に変更があります(間違ってても弊害はなさそうです)
-$version  = "20211111001";
+$version  = "2022011401";
 
 # ラッピング - リストから取得しますが、ここで指定されている場合はそのラッピングのみ取得します。
 $wrapping = "default";
 
-# 画像の大きさ - large / small / medium(?)
+# 画像の大きさ - large / small / medium
 $size     = "large";
 
-# 画像の使用用途 - full : 立ち絵 / slot : タイムラインの右下の画像 / face : 顔アイコン / ???? : 車両基地 / ???? : 車両基地(編成中)
-$type     = "full";
+# 画像の使用用途 - full : 立ち絵 / slot : タイムラインの右下の画像 / face : 顔アイコン / occupied : 車両基地 / vacant : 車両基地(編成中) / disable : 未入手
+$type     = "face";
 
 # 表情リスト
-$emotions = @("usual") #, "smile", "dovey", "angry", "tired", "dreamy", "amaze");
+$emotions = @("usual") #, "smile", "dovey", "angry", "tired", "dreamy", "amaze", "grumpy", "proud", "waver", "relax");
 
 
 # Generate URL
