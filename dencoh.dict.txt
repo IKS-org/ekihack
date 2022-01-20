@@ -109,6 +109,8 @@ yumeno
 shikine
 teira
 asuka
+miyuki
+setsuka
 
 # extra
 hermine
@@ -163,8 +165,49 @@ lea
 luiza
 elena
 melina
+aurora
+nora
+maple
 
 # iks-gear
 riko
 comyu
 chii
+
+# special
+# 創彩少女庭園
+ritsuka-saeki
+yui
+hiyori
+
+# 岬のマヨイガ
+hiwa-natsunagi
+kanna-kamakura
+
+# フラ・フラダンス
+madoka-yuki
+ranko-takigawa
+koyomi-takanasi
+ohana-kaaihue
+shion-shirosawa
+
+# ゆるキャン
+nadeshiko-kagamihara
+rin-shima
+chiaki-ohgaki
+aoi-inuyama
+ena-saitou
+
+# O.N.G.E.K.I
+akari-hoshizaki
+yuzu-fujisawa
+aoi-misumi
+tsubaki-aihara
+rio-takase
+riku-yuuki
+arisu-suzushima
+ousaka-akane
+kaede-kujo
+mia-kashiwagi
+chinatsu-hinata
+tsumugi-shinonome
