@@ -1,4 +1,5 @@
-﻿Add-Type -AssemblyName System.Windows.Forms
+﻿
+Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
 # Version定数 - 駅メモサーバ側で定期的に変更があります(間違ってても弊害はなさそうです)
