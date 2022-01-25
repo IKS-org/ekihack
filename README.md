@@ -4,12 +4,12 @@
 駅メモの既知のでんこ・ラッピングを全てダウンロードするスクリプトです。  
 
 ## 動作要件
-- PowerShell v6.0 以上
-    > - Windows PowerShellを利用している場合は、Windows UpdateからOSを最新の状態に更新し、Windows PowerShell 上で `winget install pwsh` と実行するとPowerShellをインストールできます。  
-    > - Windows PowerShell と PowerShell は別物です。  
-
 - 実行ポリシーでスクリプトの実行がブロックされないこと
-    > - PowerShell には**実行ポリシー**という概念があり、不正なコードを含むスクリプトの実行を防止するため、PowerShellスクリプトの実行を拒否することでコンピュータのセキュリティを高めています。`download.ps1`はPowerShellで記述されたスクリプトですので、ポリシーによって実行が拒否される場合があります。
+    - PowerShell には**実行ポリシー**という概念があり、不正なコードを含むスクリプトの実行を防止するため、PowerShellスクリプトの実行を拒否することでコンピュータのセキュリティを高めています。`download.ps1`はPowerShellで記述されたスクリプトですので、ポリシーによって実行が拒否される場合があります。
+    - 実行ポリシーを変更するには次のコマンドを実行します。
+        ```
+        Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+        ```
 
 ## How to use
 PowerShellで以下のように実行します。
