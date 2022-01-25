@@ -145,6 +145,7 @@ $Form.Controls.Add($SizeGroup);
 $Form.Controls.Add($TypeGroup);
 $Form.Controls.Add($OK);
 $Form.Controls.Add($CheckAll);
+$Form.Topmost = $True;
 
 $status = $Form.ShowDialog();
 
