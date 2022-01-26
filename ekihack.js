@@ -70,8 +70,8 @@ const build_nozomiOnly_formation = ()=>{
 const checkin_with_nozomi = ()=>{
     // JR新宿駅 座標
     const coord = {
-        lat = 35.6909210,
-        lng = 139.700258
+        lat : 35.6909210,
+        lng : 139.700258
     }
     // アクセスするでんこ
     const dencoh = "nozomi";
