@@ -130,7 +130,7 @@ $DencohSearch.Text = "search";
 $DencohSearch.Add_Click({
     $DencohSelectFlag = $False;
     $checkTarg = $DencohSelect.Text;
-    $dict.default.original + $dict.default.special + $dict.iks_gear + $dict.extra + $dict.ijin | %{
+    $dict.default.original + $dict.default.special + $dict.default.iks_gear + $dict.default.extra + $dict.default.ijin | %{
         if ($_ -eq $checkTarg){
             $DencohSelectFlag = $True;
             return;
