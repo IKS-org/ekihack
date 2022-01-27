@@ -82,3 +82,34 @@ const checkin_with_nozomi = ()=>{
 const auto_checkin = ()=>{
     const intvId = window.setInterval(checkin_with_nozomi, 1000*60*5);
 }
+
+// ガチャを引く
+const draw_gacha = (gacha_obj)=>{
+    const date = new Date();
+    const os_id = "";
+    const csrf_token = get_csrfToken();
+
+    const uri = "https://game.our-rails.ekimemo.com/api/actions/gacha/friend_1?__t="+date.getTime()+"&__os_id="+os_id+"&gacha_menu_id="+gacha_obj.gacha_menu_id;
+
+    return fetch(uri, { credentials:'include', method:'POST', headers:{'x-csrf-token':csrf_token, 'x-requested-with': 'XMLHttpRequest', 'Content-Type':'application/json'}, body:JSON.stringify(gacha_obj) });
+};
+
+const gacha = async (n)=>{
+    const gacha_obj = {
+        gacha_menu_id : 141,
+        key : 'friend_1'
+    };
+
+    const prizes = [];
+    for(let i=0;i<n;i++){
+        const prize = await draw_gacha(gacha_obj).then((r)=>r.json()).then((r)=>r.contents.prizes[0].content);
+        prizes.push(prize);
+    }
+    return prizes;
+}
+
+const draw_10times = ()=>{
+    gacha(10).then((res)=>{
+        console.log(res);
+    });
+}
