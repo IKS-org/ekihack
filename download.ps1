@@ -110,15 +110,53 @@ $type | %{
 $TypeRadio[0].Checked = $True;
 $TypeGroup.Controls.AddRange($TypeRadio);
 
+# DENCOH Selection
+$DencohSelectFlag = $false;
+
+$DencohSelectWrap = New-Object System.Windows.Forms.GroupBox;
+$DencohSelectWrap.Location = "175, 150";
+$DencohSelectWrap.Size = "115, 80";
+$DencohSelectWrap.Text = "Search"
+
+$DencohSelect = New-Object System.Windows.Forms.TextBox;
+$DencohSelect.Location = "5, 20";
+$DencohSelect.Size = "100, 35";
+$DencohSelect.Text = "";
+
+$DencohSearch = New-Object System.Windows.Forms.Button;
+$DencohSearch.Location = "5, 45";
+$DencohSearch.Size = "100, 25";
+$DencohSearch.Text = "search";
+$DencohSearch.Add_Click({
+    $DencohSelectFlag = $False;
+    $checkTarg = $DencohSelect.Text;
+    $dict.default.original + $dict.default.special + $dict.iks_gear + $dict.extra + $dict.ijin | %{
+        if ($_ -eq $checkTarg){
+            $DencohSelectFlag = $True;
+            return;
+        }
+    }
+
+    if($DencohSelectFlag){
+        $Text = "Found. Only '${checkTarg}' may downloads.";
+    }else{
+        $Text = "Undified specified denco(H) : ${checkTarg}";
+    }
+    [System.Windows.Forms.MessageBox]::Show($Text);
+});
+
+$DencohSelectWrap.Controls.Add($DencohSelect);
+$DencohSelectWrap.Controls.Add($DencohSearch);
+
 ## Control
 $OK = New-Object System.Windows.Forms.Button;
-$OK.Location = "190, 155";
+$OK.Location = "295, 155";
 $OK.Size = "80, 35";
 $OK.Text = "Download";
 $OK.DialogResult = "OK";
 
 $CheckAll = New-Object System.Windows.Forms.Button;
-$CheckAll.Location = "190, 195";
+$CheckAll.Location = "295, 195";
 $CheckAll.Size = "80, 35";
 $CheckAll.Text = "Check All";
 $CheckAll.DialogResult = "None";
@@ -143,13 +181,13 @@ $Form.Controls.Add($SizeGroup);
 $Form.Controls.Add($TypeGroup);
 $Form.Controls.Add($OK);
 $Form.Controls.Add($CheckAll);
+$Form.Controls.Add($DencohSelectWrap);
 $Form.Topmost = $True;
 
 $status = $Form.ShowDialog();
 
 # Download
 if ($status -eq "OK"){
-    
     # チェック済み
     $DLDencoh = $DencohChecks.CheckedItems;
     $DLWrap = $WrapChecks.CheckedItems;
@@ -158,6 +196,7 @@ if ($status -eq "OK"){
     $DLSize = ($SizeRadio | ?{$_.Checked -eq $True}).Text
 
     # ダウンロード
+    $SpecifiedDencoh = $DencohSelect.Text;
     $DLWrap | %{
         $wrapName = $_;
         $DLTarg = ${dict}.${wrapName}
@@ -165,7 +204,7 @@ if ($status -eq "OK"){
             $dencohTypeKey = $_;
             ${DLTarg}.${dencohTypeKey} | %{
                 $dencohName = $_;
-                if(!$dencohName.Length){return;}
+                if(!$dencohName.Length -or ($SpecifiedDencoh.length -and $SpecifiedDencoh -ne $dencohName)){return;}
                 $DLEmo | %{
                     $emotion = $_;
                     if (!(Test-Path "./download/${wrapName}")){mkdir "./download/${wrapName}"};
@@ -178,5 +217,4 @@ if ($status -eq "OK"){
             }
         }
     }
-
 }
