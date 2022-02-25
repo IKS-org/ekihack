@@ -1,8 +1,10 @@
+$dictPath = $Args[0];
+
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
 # Version定数 - 駅メモサーバ側で定期的に変更があります(間違ってても弊害はなさそうです)
-$version  = "2022011401";
+$version  = "2022022401";
 
 # 画像の大きさ - large / small / medium
 $size     = @("large", "medium", "small");
@@ -15,7 +17,13 @@ $type     = @("full", "slot", "face");
 $emotions = @("usual", "smile", "dovey", "angry", "tired", "dreamy", "amaze", "grumpy", "proud", "waver", "relax");
 
 # 辞書
-$dict = iwr "https://raw.githubusercontent.com/sweshelo/ekihack/master/list.json" | ConvertFrom-Json
+if (Test-Path $dictPath) {
+    "辞書ファイルをローカルからロードします"
+    $dict = Get-Content $dictPath | ConvertFrom-Json;
+} else {
+    "辞書ファイルをダウンロードします"
+    $dict = iwr "https://raw.githubusercontent.com/sweshelo/ekihack/master/list.json" | ConvertFrom-Json
+}
 $wrapList = $dict | Get-Member | ?{$_.MemberType -eq "NoteProperty"} | select Name
 
 # Generate URL
@@ -128,22 +136,22 @@ $DencohSearch.Location = "5, 45";
 $DencohSearch.Size = "100, 25";
 $DencohSearch.Text = "search";
 $DencohSearch.Add_Click({
-    $DencohSelectFlag = $False;
-    $checkTarg = $DencohSelect.Text;
-    $dict.default.original + $dict.default.special + $dict.default.iks_gear + $dict.default.extra + $dict.default.ijin | %{
+        $DencohSelectFlag = $False;
+        $checkTarg = $DencohSelect.Text;
+        $dict.default.original + $dict.default.special + $dict.default.iks_gear + $dict.default.extra + $dict.default.ijin | %{
         if ($_ -eq $checkTarg){
-            $DencohSelectFlag = $True;
-            return;
+        $DencohSelectFlag = $True;
+        return;
         }
-    }
+        }
 
-    if($DencohSelectFlag){
+        if($DencohSelectFlag){
         $Text = "Found. Only '${checkTarg}' may downloads.";
-    }else{
+        }else{
         $Text = "Undified specified denco(H) : ${checkTarg}";
-    }
-    [System.Windows.Forms.MessageBox]::Show($Text);
-});
+        }
+        [System.Windows.Forms.MessageBox]::Show($Text);
+        });
 
 $DencohSelectWrap.Controls.Add($DencohSelect);
 $DencohSelectWrap.Controls.Add($DencohSearch);
@@ -161,13 +169,13 @@ $CheckAll.Size = "80, 35";
 $CheckAll.Text = "Check All";
 $CheckAll.DialogResult = "None";
 $CheckAll.Add_Click({
-    for($i=0; $i -lt $($WrapChecks.Items).Length; $i++){
+        for($i=0; $i -lt $($WrapChecks.Items).Length; $i++){
         $WrapChecks.SetItemChecked($i, $true);
-    }
-    for($i=0; $i -lt $($DencohChecks.Items).Length; $i++){
+        }
+        for($i=0; $i -lt $($DencohChecks.Items).Length; $i++){
         $DencohChecks.SetItemChecked($i, $true);
-    }
-});
+        }
+        });
 
 # main
 if (!(test-path download)) {
@@ -188,15 +196,15 @@ $status = $Form.ShowDialog();
 
 # Download
 if ($status -eq "OK"){
-    # チェック済み
+# チェック済み
     $DLDencoh = $DencohChecks.CheckedItems;
     $DLWrap = $WrapChecks.CheckedItems;
     $DLEmo = $EmoChecks.CheckedItems;
     $DLType = ($TypeRadio | ?{$_.Checked -eq $True}).Text
-    $DLSize = ($SizeRadio | ?{$_.Checked -eq $True}).Text
+        $DLSize = ($SizeRadio | ?{$_.Checked -eq $True}).Text
 
-    # ダウンロード
-    $SpecifiedDencoh = $DencohSelect.Text;
+# ダウンロード
+        $SpecifiedDencoh = $DencohSelect.Text;
     $DLWrap | %{
         $wrapName = $_;
         $DLTarg = ${dict}.${wrapName}
