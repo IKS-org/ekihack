@@ -2,7 +2,7 @@ Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
 # Version定数 - 駅メモサーバ側で定期的に変更があります(間違ってても弊害はなさそうです)
-$version  = "2022011401";
+$version  = "2022022401";
 
 # 画像の大きさ - large / small / medium
 $size     = @("large", "medium", "small");
