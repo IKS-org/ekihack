@@ -17,7 +17,7 @@ $type     = @("full", "slot", "face");
 $emotions = @("usual", "smile", "dovey", "angry", "tired", "dreamy", "amaze", "grumpy", "proud", "waver", "relax");
 
 # 辞書
-if ($dictPath -and Test-Path $dictPath) {
+if ($dictPath -and (Test-Path $dictPath)) {
     "辞書ファイルをローカルからロードします"
     $dict = Get-Content $dictPath | ConvertFrom-Json;
 } else {
