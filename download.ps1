@@ -18,10 +18,10 @@ $emotions = @("usual", "smile", "dovey", "angry", "tired", "dreamy", "amaze", "g
 
 # 辞書
 if ($dictPath -and (Test-Path $dictPath)) {
-    "辞書ファイルをローカルからロードします"
+    # "辞書ファイルをローカルからロードします"
     $dict = Get-Content $dictPath | ConvertFrom-Json;
 } else {
-    "辞書ファイルをダウンロードします"
+    # "辞書ファイルをダウンロードします"
     $dict = iwr "https://raw.githubusercontent.com/sweshelo/ekihack/master/list.json" | ConvertFrom-Json
 }
 $wrapList = $dict | Get-Member | ?{$_.MemberType -eq "NoteProperty"} | select Name
